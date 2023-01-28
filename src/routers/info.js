@@ -33,7 +33,7 @@ try{
 });
 
 
-router.patch('/',async(req,res)=>{
+router.post('/update/',async(req,res)=>{
     try{
         const data=await infoModel.findById(req.body._id)
         data.firstName=req.body.firstName
@@ -50,11 +50,12 @@ router.patch('/',async(req,res)=>{
 })
 
 
-router.delete('/',async(req,res)=>{
+router.post('/delete/',async(req,res)=>{
     try{
-        const data=await dbConnect();
-        const a=await data.deleteOne({_id:new mongodb.ObjectId(req.params._id)})
-        res.json(a);
+        infoModel.findByIdAndDelete(req.body._id, (err, doc) => {
+        res.json(infoModel,doc,err);
+    });
+         
         }catch(error){
         res.status(500).send(error);
         }
